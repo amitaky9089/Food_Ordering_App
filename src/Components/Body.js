@@ -29,7 +29,7 @@ const Body = () => {
     );
   };
 
-  console.log(listofRest);
+  //console.log(listofRest);
   // Conditional Rendering
   if(listofRest?.length===0){
     return <Shimmer/>;

@@ -11,12 +11,8 @@ const RestrauntCard = (props) => {
       <img
         className="res-logo"
         src={CDN_URL+cloudinaryImageId}
-      ></img>
-      {/* <h3>{resData.info.name}</h3>
-      <h4>{resData.info.cuisines.join(", ")}</h4>
-      <h5>{resData.info.avgRating} Stars</h5> 
-     <h5>{resData.info.sla.deliveryTime} minutes</h5> */}
-
+      >
+      </img>
        <h3>{name}</h3>
       <h4>{cuisines.join(", ")}</h4>
       <h5>{avgRating} Stars</h5> 
