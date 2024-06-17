@@ -2,11 +2,13 @@ import RestrauntCard from "./RestrauntCard";
 import { useState, useEffect } from "react";
 import Shimmer from "./Shimmer";
 import { Link } from "react-router-dom";
+import useOnlineStatus from "../utils/useOnlineStatus";
+
 const Body = () => {
   // local state variable
   const [listofRest, setlistofRest] = useState([]);
   //fitlered data comes from this.
-  const [FilteredlistRestaurant,setFilteredlistRestaurant]=useState([]);
+  const [FilteredlistRestaurant, setFilteredlistRestaurant] = useState([]);
   // local state variable for seachbox
 
   let [seachText, setsearchText] = useState("");
@@ -29,36 +31,45 @@ const Body = () => {
     );
   };
 
-  //console.log(listofRest);
+  const onlineStatus = useOnlineStatus();
+  if (onlineStatus === false) return (
+  <h1>Oops! looks like you are offline.
+      Check your connection.
+  </h1>);
   // Conditional Rendering
-  if(listofRest?.length===0){
-    return <Shimmer/>;
+  if (listofRest?.length === 0) {
+    return <Shimmer />;
   }
-  // console.log(listofRest);
+
   return (
     <div className="body">
       {/* here is our seach box  */}
-      <div className="filter">
-        <div className="search">
+      <div className="filter flex m-3">
+        <div className="search p-1 ">
           <input
             type="text"
-            className="search-box"
+            className="search-box border border-solid border-blue-200 rounded-md"
             value={seachText}
             onChange={(e) => {
               setsearchText(e.target.value);
             }}
           />
-          <button onClick={() => {
-            // console.log(seachText)
-            //filterd restaurnt logic
-           const filteredRestaurant=listofRest.filter(
-              (res)=> res.info.name.toLowerCase().includes(seachText.toLowerCase()))
+          <button className="px-2  bg-slate-200 mx-1 rounded-md"
+            onClick={() => {
+              // console.log(seachText)
+              //filterd restaurnt logic
+              const filteredRestaurant = listofRest.filter((res) =>
+                res.info.name.toLowerCase().includes(seachText.toLowerCase())
+              );
               setFilteredlistRestaurant(filteredRestaurant);
-            }
-            }>Search</button>
+            }}
+          >
+            Search
+          </button>
         </div>
+        <div className="search p-1 ">
         <button
-          className="filter-btn"
+          className="filter-btn bg-slate-200 rounded-md px-2"
           onClick={() => {
             let filteredlist = FilteredlistRestaurant.filter(
               (res) => res.info.avgRating > 4
@@ -68,14 +79,17 @@ const Body = () => {
         >
           Top Rated Restaurant
         </button>
+        </div>
       </div>
       {/* here is our restraunt cards */}
-      <div className="res-container">
-      
-
-        
+      <div className="res-container flex flex-wrap justify-evenly">
         {FilteredlistRestaurant.map((restaurant) => (
-         <Link key={restaurant.info.id} to={"/restaurants/"+restaurant.info.id}><RestrauntCard resData={restaurant} /></Link>
+          <Link
+            key={restaurant.info.id}
+            to={"/restaurants/" + restaurant.info.id}
+          >
+            <RestrauntCard resData={restaurant} />
+          </Link>
         ))}
       </div>
     </div>

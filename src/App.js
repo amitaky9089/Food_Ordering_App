@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Suspense } from "react";
 import ReactDOM from "react-dom/client";
 import Header from "./Components/Header";
 import Body from "./Components/Body";
@@ -6,11 +6,13 @@ import About from "./Components/About";
 import Contact from "./Components/Contact";
 import Error from "./Components/Error";
 import RestaurantMenu from "./Components/RestaurantMenu";
-
+import { lazy } from "react";
 import { createBrowserRouter ,RouterProvider ,Outlet } from "react-router-dom";
+// import Grocery from "./Components/Grocery";
 
 // createBrowserRouter help in creating configuration and routerprovide helps in Providing created config to app for rendering purposes.
 
+const Grocery=lazy(()=>import("./Components/Grocery"))
 const Applayout = () => {
   return (
     <div className="app">
@@ -44,6 +46,12 @@ const Approuter=createBrowserRouter([
         // if configuration is "/contact" then it will load contact us page 
          path:"/contact",
          element:<Contact/>,
+      },
+      {
+         path:"/grocery",
+         element:(
+         <Suspense fallback={<h1>Loading...</h1>}><Grocery/></Suspense>
+        ),
       },
       {
         // semi-colon indicates that now paths after restaurant is dynamic.

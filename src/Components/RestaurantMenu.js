@@ -1,22 +1,11 @@
-import { useState, useEffect} from "react";
+
 import Shimmer from "./Shimmer";
 import { useParams } from "react-router-dom";
-import { MENU_API } from "../utils/constant";
+import useRestaurantMenu from "../utils/useRestaurantMenu";
 
-// const param=useParams();
-// console.log(param);
 const RestaurantMenu = () => {
-  const [resInfo, setresInfo] = useState(null);
   const {resId}= useParams();
-  useEffect(() => {
-    fetchMenu();
-  }, []);
-  //as we want to make api call once therefore we use dependency array
-  const fetchMenu = async () => {
-    const data = await fetch(MENU_API + resId);
-    const json = await data.json();
-    setresInfo(json.data);
-  };
+  const resInfo=useRestaurantMenu(resId)
   if (resInfo === null) return <Shimmer />;
   const { name, cuisines, costForTwoMessage } =
     resInfo?.cards[2]?.card?.card?.info;
